@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CIPHER-DECK // Tactical Retro-Mainframe Puzzle Terminal</title>
+    <meta name="description"
+        content="Tactical retro-tech puzzle game for developers and hackers. Bypass security sectors through logic circuits, substitution ciphers, and syntax patching." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;700;800&display=swap"
+        rel="stylesheet" />
+    <!-- Tailwind CSS CDN for instant rendering -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['"Share Tech Mono"', '"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        amber: {
+                            400: '#FFB000',
+                            500: '#FF9E00',
+                            600: '#E08B00',
+                        },
+                        cyan: {
+                            300: '#38efd8',
+                            400: '#00E8C6',
+                            500: '#00B4D8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="./src/index.css" />
+</head>
+
+<body class="bg-[#0d1117] text-[#FFB000] font-mono selection:bg-amber-500 selection:text-neutral-950">
+    <div id="root"></div>
+    <script type="module" src="./src/main.jsx"></script>
+</body>
+
+</html>
