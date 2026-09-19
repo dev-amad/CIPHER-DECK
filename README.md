@@ -1,26 +1,7 @@
-# CIPHER-DECK
-
-> **Tactical Retro-Mainframe Puzzle Terminal Game**  
-> Designed for developers, hackers, computer science students, and retro-computing enthusiasts.
-
-
-CIPHER-DECK simulates a late-1990s secure military/research computing system (Project PROMETHEUS). Players breach security tiers through realistic technical puzzles. The Game has 5 Sectors Ranging from Simple syntax bugs in the start to complex ciphers as the player advances. Completing all 5 sectors leads the player to the Victory Screen. completing the game takes around 10 to 20 Minutes.
-
-Here's a better look at how the game progresses 
-[ POST / BIOS Boot ] 
-        │
-        ▼
-[ Terminal Shell & Deck Dashboard ]  ◄────────────────┐
-        │                                             │
-        ├──► SECTOR 01: Syntax Fix (Python Listener) ─┤
-        ├──► SECTOR 02: Logic Gate (Circuit Relay)   ─┤ (Unlocks Log Files,
-        ├──► SECTOR 03: Cipher (Frequency Analysis)  ─┤  Elevates Clearance)
-        ├──► SECTOR 04: Logic Gate (Ring-0 Interrupt)─┤
-        └──► SECTOR 05: Syntax Fix (C Pointer SIGSEGV)┘
-        │
-        ▼
-[ Master Root Access // Sovereign Win Screen ]
+CIPHER-DECK: THE RETRO HACKING GAME
+Hey guys! This is my first Game ever, called CIPHER-DECK. What is CIPHER-DECK you may ask? Well to put it as how i imagined the game, it emulates hacking into a early 90s company's main computer systems, something like you see in movies. I had thinking about it for a while and finally started when i found out about stardance. Now the game is up and running and much better then what i had ever imsgined it would be from my previous tries at building applications. My favourite part has to be the SFX. 
 
 Hope everyone reading this enjoys the game. This is a Big Milestone for me as this is both my first game and first Hack Club Project! Cannot wait to see everyones reviews and critiques
+P.S I am plannong on starting work on the other features in the @DevLogs.md, need to wrap up with school work and exams first tho :>
 
-Signing off, Amad-Hussain-Dev
+Signing off, Amad-Hussain-Dev 
