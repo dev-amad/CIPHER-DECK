@@ -11,7 +11,7 @@
     }
 }
 
-/* CRT ScanLine Background Texture */
+
 .bg-scanlines {
     background: linear-gradient(rgba(18, 16, 16, 0) 50%,
             rgba(0, 0, 0, 0.5) 50%),
@@ -22,7 +22,7 @@
     background-size: 100% 3px, 6px 100%;
 }
 
-/* CRT Subtle Flicker Animation */
+
 @keyframes crtFlicker {
     0% {
         opacity: 0.985;
@@ -53,7 +53,7 @@
     animation: crtFlicker 0.15s infinite;
 }
 
-/* Modal and Log Entrance Animation */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -70,7 +70,6 @@
     animation: fadeIn 0.2s ease-out forwards;
 }
 
-/* Retro Custom Scrollbars */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;

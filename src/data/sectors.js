@@ -1,8 +1,3 @@
-/**
- * CIPHER-DECK Sector & Clearance Manifest
- * Contains sector definitions, narrative logs, and retro ASCII art.
- */
-
 export const SECTORS = [
     {
         id: 'SECTOR_01',

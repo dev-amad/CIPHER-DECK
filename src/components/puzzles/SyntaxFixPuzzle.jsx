@@ -83,9 +83,9 @@ export default function SyntaxFixPuzzle({ puzzle, sector, onSolve, onBack }) {
                 {puzzle.description}
             </p>
 
-            {/* Code Viewer Container */}
+
             <div className="bg-[#0c0f14] border-2 border-amber-500/40 rounded-xl overflow-hidden shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]">
-                {/* Editor Titlebar */}
+
                 <div className="bg-[#151a22] border-b border-amber-500/30 px-4 py-2 flex items-center justify-between text-xs text-neutral-400">
                     <div className="flex items-center space-x-2">
                         <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block" />
@@ -96,7 +96,7 @@ export default function SyntaxFixPuzzle({ puzzle, sector, onSolve, onBack }) {
                     <span className="text-[11px] text-red-400">FAULT DETECTED AT LINE {puzzle.errorLine}</span>
                 </div>
 
-                {/* Code Lines with Line Numbers */}
+
                 <div className="p-4 font-mono text-xs sm:text-sm overflow-x-auto">
                     {puzzle.codeLines.map((item) => {
                         const isBugLine = item.line === puzzle.errorLine;
@@ -106,10 +106,10 @@ export default function SyntaxFixPuzzle({ puzzle, sector, onSolve, onBack }) {
                             <div
                                 key={item.line}
                                 className={`flex items-center space-x-4 py-0.5 px-2 rounded ${isBugLine
-                                        ? patchApplied
-                                            ? 'bg-emerald-950/40 border-l-4 border-emerald-500 text-emerald-300'
-                                            : 'bg-red-950/40 border-l-4 border-red-500 text-red-200'
-                                        : 'text-neutral-300 hover:bg-neutral-800/30'
+                                    ? patchApplied
+                                        ? 'bg-emerald-950/40 border-l-4 border-emerald-500 text-emerald-300'
+                                        : 'bg-red-950/40 border-l-4 border-red-500 text-red-200'
+                                    : 'text-neutral-300 hover:bg-neutral-800/30'
                                     }`}
                             >
                                 <span className="w-8 text-neutral-600 select-none text-right text-xs">
@@ -132,7 +132,14 @@ export default function SyntaxFixPuzzle({ puzzle, sector, onSolve, onBack }) {
                 </div>
             </div>
 
-            {/* Compiler Diagnostic Output Shell */}
+
+
+
+
+
+
+
+            
             <div className="bg-[#090b0e] border border-red-500/30 rounded-lg p-3 font-mono text-xs space-y-1">
                 <div className="text-[10px] font-bold text-neutral-400 border-b border-neutral-800 pb-1 flex justify-between">
                     <span>COMPILER DIAGNOSTIC TRACE</span>
@@ -145,7 +152,9 @@ export default function SyntaxFixPuzzle({ puzzle, sector, onSolve, onBack }) {
                 </div>
             </div>
 
-            {/* Interactive Patch Selector Menu */}
+            
+
+            
             <div className="bg-[#121417] border border-amber-500/40 rounded-xl p-4 sm:p-5 space-y-4">
                 <div className="flex items-center justify-between text-xs">
                     <span className="font-bold text-amber-400">SELECT CANDIDATE CODE PATCH:</span>
@@ -160,8 +169,8 @@ export default function SyntaxFixPuzzle({ puzzle, sector, onSolve, onBack }) {
                                 key={opt.id}
                                 onClick={() => handleSelectOption(opt.id)}
                                 className={`p-3 rounded-lg border text-xs cursor-pointer transition-all duration-150 select-none ${isSelected
-                                        ? 'border-amber-400 bg-amber-950/40 shadow-[0_0_10px_rgba(255,176,0,0.3)] ring-1 ring-amber-400/50'
-                                        : 'border-neutral-800 bg-[#161a21] hover:border-neutral-700'
+                                    ? 'border-amber-400 bg-amber-950/40 shadow-[0_0_10px_rgba(255,176,0,0.3)] ring-1 ring-amber-400/50'
+                                    : 'border-neutral-800 bg-[#161a21] hover:border-neutral-700'
                                     }`}
                             >
                                 <div className="flex items-center space-x-2 mb-1.5">
@@ -186,8 +195,8 @@ export default function SyntaxFixPuzzle({ puzzle, sector, onSolve, onBack }) {
                         onClick={handleApplyPatch}
                         disabled={!selectedOptionId || isCompiling}
                         className={`px-6 py-2.5 rounded font-bold tracking-wider text-xs sm:text-sm transition-all cursor-pointer ${!selectedOptionId || isCompiling
-                                ? 'bg-neutral-800 text-neutral-500 cursor-not-allowed'
-                                : 'bg-amber-500 text-neutral-950 hover:bg-amber-400 shadow-[0_0_15px_rgba(255,176,0,0.5)] active:scale-95'
+                            ? 'bg-neutral-800 text-neutral-500 cursor-not-allowed'
+                            : 'bg-amber-500 text-neutral-950 hover:bg-amber-400 shadow-[0_0_15px_rgba(255,176,0,0.5)] active:scale-95'
                             }`}
                     >
                         {isCompiling ? '[ COMPILING PATCH... ]' : 'COMPILE & TEST PATCH >>'}

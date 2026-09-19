@@ -44,18 +44,18 @@ export default function TerminalShell({
                 newHistory.push({
                     type: 'response',
                     text: `AVAILABLE COMMANDS:
-  help               - Display command reference manual
-  status             - Show clearance tier & compromised sector nodes
-  sectors            - List all network sectors & lock states
-  sector <1-5>       - Breach target sector (e.g. "sector 1")
-  breach <1-5>       - Alias for sector command
-  logs               - View all acquired classified server logfiles
-  cat <filename>     - Read decrypted log file contents
-  scan               - Perform diagnostic scan of subnet
-  sound <on|off>     - Toggle terminal sound effects
-  whoami             - Display current session privilege
-  clear              - Wipe terminal screen buffer
-  reset              - Factory wipe session & reset terminal`
+ help               - Display command reference manual
+ status             - Show clearance tier & compromised sector nodes
+ sectors            - List all network sectors & lock states
+ sector <1-5>       - Breach target sector (e.g. "sector 1")
+ breach <1-5>       - Alias for sector command
+ logs               - View all acquired classified server logfiles
+ cat <filename>     - Read decrypted log file contents
+ scan               - Perform diagnostic scan of subnet
+ sound <on|off>     - Toggle terminal sound effects
+ whoami             - Display current session privilege
+ clear              - Wipe terminal screen buffer
+ reset              - Factory wipe session & reset terminal`
                 });
                 sound.playBeep(600, 0.05);
                 break;
@@ -173,11 +173,11 @@ CURRENT OBJECTIVE : ${solvedSectors.length === sectors.length
                     type: 'response',
                     text: `[PROBING SUBNET 10.244.18.0/24]
 Discovered ports:
-  - 8080/tcp  [OPEN]  (SECTOR_01 :: SENTINEL)
-  - 443/tcp   [FIREWALL] (SECTOR_02 :: RELAY_BUS)
-  - 2222/tcp  [ENCRYPTED] (SECTOR_03 :: CRYPT_VAULT)
-  - 0x21/bus  [PROTECTED] (SECTOR_04 :: KERNEL)
-  - 0xFF/bus  [BLACK_ICE] (SECTOR_05 :: PROMETHEUS)`
+ - 8080/tcp  [OPEN]  (SECTOR_01 :: SENTINEL)
+ - 443/tcp   [FIREWALL] (SECTOR_02 :: RELAY_BUS)
+ - 2222/tcp  [ENCRYPTED] (SECTOR_03 :: CRYPT_VAULT)
+ - 0x21/bus  [PROTECTED] (SECTOR_04 :: KERNEL)
+ - 0xFF/bus  [BLACK_ICE] (SECTOR_05 :: PROMETHEUS)`
                 });
                 sound.playBeep(850, 0.08);
                 break;

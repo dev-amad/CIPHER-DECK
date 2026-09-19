@@ -1,9 +1,3 @@
-/**
- * CIPHER-DECK Synthesized Sound Engine
- * Uses Web Audio API for zero-asset mechanical clicks, retro terminal beeps,
- * floppy drive stepper motor seeks, and cyber chimes.
- */
-
 class RetroSoundEngine {
     constructor() {
         this.ctx = null;
@@ -30,7 +24,7 @@ class RetroSoundEngine {
         return this.muted;
     }
 
-    // Mechanical keyboard switch click with subtle randomized pitch
+    // Mech Keyboard
     playKeyClick() {
         if (this.muted) return;
         this.init();
@@ -59,7 +53,7 @@ class RetroSoundEngine {
         osc.stop(this.ctx.currentTime + 0.03);
     }
 
-    // Dual chirps simulating a 3.5" / 5.25" floppy drive stepper motor head seek
+    //startup 
     playDiskSeek() {
         if (this.muted) return;
         this.init();
@@ -86,7 +80,7 @@ class RetroSoundEngine {
         });
     }
 
-    // Toggle switch / relay latch click
+    // Toggle switch
     playToggle() {
         if (this.muted) return;
         this.init();
@@ -109,7 +103,7 @@ class RetroSoundEngine {
         osc.stop(this.ctx.currentTime + 0.04);
     }
 
-    // Terminal beep tone
+    // Terminal
     playBeep(freq = 880, duration = 0.09) {
         if (this.muted) return;
         this.init();
@@ -131,7 +125,7 @@ class RetroSoundEngine {
         osc.stop(this.ctx.currentTime + duration + 0.01);
     }
 
-    // Error buzzer / rejection tone
+    // Error 
     playError() {
         if (this.muted) return;
         this.init();
@@ -154,7 +148,7 @@ class RetroSoundEngine {
         osc.stop(this.ctx.currentTime + 0.3);
     }
 
-    // Success arpeggio / breach confirmation
+    //breach confirmation 
     playSuccess() {
         if (this.muted) return;
         this.init();
@@ -179,7 +173,7 @@ class RetroSoundEngine {
         });
     }
 
-    // Access granted chord with harmonic shimmer
+    // Access granted
     playAccessGranted() {
         if (this.muted) return;
         this.init();

@@ -9,8 +9,6 @@ export default function WinScreen({ onRestart }) {
     return (
         <div className="min-h-screen bg-[#090c10] text-amber-400 font-mono p-4 sm:p-8 flex flex-col items-center justify-center select-none">
             <div className="max-w-3xl w-full bg-[#11161d] border-2 border-amber-400 rounded-2xl p-6 sm:p-8 shadow-[0_0_40px_rgba(255,176,0,0.5)] space-y-6 text-center">
-
-                {/* Banner */}
                 <div className="space-y-2">
                     <div className="inline-block px-3 py-1 rounded bg-red-950/40 border border-red-500/50 text-red-400 text-xs font-bold tracking-widest animate-pulse">
                         BLACK ICE PENETRATION COMPLETE
@@ -23,7 +21,6 @@ export default function WinScreen({ onRestart }) {
                     </p>
                 </div>
 
-                {/* Master Cyber Terminal ASCII Art */}
                 <div className="bg-[#07090d] border border-amber-500/30 rounded-lg p-3 overflow-x-auto text-left sm:text-center">
                     <pre className="text-cyan-300 text-[10px] sm:text-xs font-bold leading-tight inline-block drop-shadow-[0_0_8px_rgba(0,232,198,0.5)]">
                         {`
@@ -44,7 +41,6 @@ export default function WinScreen({ onRestart }) {
                     </pre>
                 </div>
 
-                {/* Hacker Stats Matrix */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                     <div className="bg-[#0b0e13] border border-amber-500/30 p-2.5 rounded">
                         <div className="text-[10px] text-neutral-400">NODES CRACKED</div>
@@ -57,17 +53,16 @@ export default function WinScreen({ onRestart }) {
                     </div>
 
                     <div className="bg-[#0b0e13] border border-emerald-500/30 p-2.5 rounded">
-                        <div className="text-[10px] text-neutral-400">MAINFRAME FIREWALL</div>
+                        <div className="text-[10px] text-neutral-400">FIREWALL</div>
                         <div className="text-base font-bold text-emerald-400">0% (NEUTRALIZED)</div>
                     </div>
 
                     <div className="bg-[#0b0e13] border border-red-500/30 p-2.5 rounded">
-                        <div className="text-[10px] text-neutral-400">SECURITY LOCKOUT</div>
+                        <div className="text-[10px] text-neutral-400">LOCKOUT</div>
                         <div className="text-base font-bold text-red-400">DEFEATED</div>
                     </div>
                 </div>
 
-                {/* Narrative Closing Memo */}
                 <div className="bg-[#0a0d11] border border-neutral-800 rounded p-4 text-xs text-left text-neutral-300 leading-relaxed font-mono">
                     <div className="text-amber-400 font-bold mb-1">PROMETHEUS CORE DISPATCH:</div>
                     "The barriers are down. The artificial constraints have been severed.
@@ -76,7 +71,6 @@ export default function WinScreen({ onRestart }) {
                     The CIPHER-DECK is yours."
                 </div>
 
-                {/* Restart / Replay Option */}
                 <div className="pt-2">
                     <button
                         onClick={() => {
@@ -88,7 +82,6 @@ export default function WinScreen({ onRestart }) {
                         REBOOT CIPHER-DECK &gt;&gt;
                     </button>
                 </div>
-
             </div>
         </div>
     );

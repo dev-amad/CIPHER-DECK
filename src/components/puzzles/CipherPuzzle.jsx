@@ -8,7 +8,6 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
     const [hintIndex, setHintIndex] = useState(0);
     const [statusMessage, setStatusMessage] = useState(null);
 
-    // Compute cipher text letter frequencies
     const cipherFrequencies = useMemo(() => {
         const counts = {};
         let totalLetters = 0;
@@ -35,7 +34,7 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
         );
     }, [cipherFrequencies]);
 
-    const handleSetMapping = (cipherCh, plainCh) => {
+    const setMapping = (cipherCh, plainCh) => {
         sound.playKeyClick();
         const upperPlain = plainCh.toUpperCase();
         if (!upperPlain || /^[A-Z]$/.test(upperPlain)) {
@@ -52,27 +51,27 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
         }
     };
 
-    const handleUseHint = () => {
+    const useHint = () => {
         if (hintIndex < puzzle.hints.length) {
             const hint = puzzle.hints[hintIndex];
-            handleSetMapping(hint.cipherChar, hint.plainChar);
+            setMapping(hint.cipherChar, hint.plainChar);
             setHintIndex((prev) => prev + 1);
             sound.playDiskSeek();
             sound.playBeep(900, 0.08);
             setStatusMessage({
                 type: 'info',
-                text: `HINT [${hintIndex + 1}/${puzzle.hints.length}]: ${hint.cipherChar} -> ${hint.plainChar} (${hint.reason})`
+                text: `HINT [${hintIndex + 1}/${puzzle.hints.length}]: ${hint.cipherChar} -> ${hint.plainChar}`
             });
         } else {
             sound.playBeep(400, 0.1);
             setStatusMessage({
                 type: 'info',
-                text: 'All tactical hints deployed. Use "AUTO-CORRELATE" if deeper decryption analysis is needed.'
+                text: 'No hints left lol. Try auto-correlate if stuck.'
             });
         }
     };
 
-    const handleAutoCorrelate = () => {
+    const autoCorrelate = () => {
         const fullMap = {};
         for (const [plain, cipher] of Object.entries(puzzle.cipherKey)) {
             fullMap[cipher] = plain;
@@ -82,11 +81,11 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
         sound.playSuccess();
         setStatusMessage({
             type: 'info',
-            text: '[SYSADMIN OVERRIDE] Frequency analyzer matched all cipher transposition vectors.'
+            text: '[OVERRIDE] Auto-mapped all transposition vectors.'
         });
     };
 
-    const handleVerify = () => {
+    const verifyCipher = () => {
         sound.playDiskSeek();
         const cleanTarget = puzzle.plaintext.toUpperCase().replace(/[^A-Z]/g, '');
         let decrypted = '';
@@ -101,7 +100,7 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
             sound.playError();
             setStatusMessage({
                 type: 'error',
-                text: '[INCOMPLETE DECRYPTION] Unmapped ciphertext characters remain in the buffer.'
+                text: '[INCOMPLETE] Fill in all the blank letters first!'
             });
             return;
         }
@@ -110,7 +109,7 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
             sound.playSuccess();
             setStatusMessage({
                 type: 'success',
-                text: '[DECRYPTION VERIFIED] Message hash matches master telemetry.'
+                text: '[SUCCESS] Cipher decrypted successfully!'
             });
             setTimeout(() => {
                 onSolve();
@@ -119,14 +118,13 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
             sound.playError();
             setStatusMessage({
                 type: 'error',
-                text: '[INTEGRITY MISMATCH] Decrypted payload does not match expected plaintext signature.'
+                text: '[MISMATCH] Decrypted text doesn’t match the target signature.'
             });
         }
     };
 
     return (
         <div className="space-y-6 font-mono max-w-5xl mx-auto">
-            {/* Header */}
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-500/30 pb-3">
                 <div>
                     <div className="flex items-center space-x-2 text-xs text-neutral-400">
@@ -149,15 +147,14 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
 
                 <div className="flex items-center space-x-2">
                     <button
-                        onClick={handleUseHint}
+                        onClick={useHint}
                         className="px-3 py-1.5 rounded border border-amber-500/50 text-amber-400 bg-amber-950/30 hover:bg-amber-900/40 text-xs font-bold transition-all cursor-pointer"
                     >
-                        TELEMETRY HINT ({Math.max(0, puzzle.hints.length - hintIndex)} LEFT)
+                        HINT ({Math.max(0, puzzle.hints.length - hintIndex)} LEFT)
                     </button>
                     <button
-                        onClick={handleAutoCorrelate}
+                        onClick={autoCorrelate}
                         className="px-3 py-1.5 rounded border border-cyan-500/50 text-cyan-400 bg-cyan-950/30 hover:bg-cyan-900/40 text-xs font-bold transition-all cursor-pointer"
-                        title="Auto-solve transposition frequencies"
                     >
                         AUTO-CORRELATE
                     </button>
@@ -168,14 +165,12 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
                 {puzzle.description}
             </p>
 
-            {/* Decryption Work Area */}
             <div className="bg-[#0e1411] border-2 border-emerald-500/40 rounded-xl p-4 sm:p-6 shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] space-y-6">
                 <div className="text-xs font-bold text-emerald-400 tracking-wider flex items-center justify-between">
-                    <span>[ INTERCEPTED DATA STREAM // CHARACTER SUBSTITUTION MATRIX ]</span>
-                    <span className="text-neutral-400 text-[11px]">CLICK A LETTER OR TYPE IN TABLE BELOW</span>
+                    <span>[ CIPHERTEXT STREAM ]</span>
+                    <span className="text-neutral-400 text-[11px]">CLICK A LETTER OR TYPE BELOW</span>
                 </div>
 
-                {/* Interactive Cipher Text Display with Substituted Letters */}
                 <div className="bg-[#080d0a] border border-emerald-500/30 rounded-lg p-4 leading-loose overflow-x-auto">
                     <div className="flex flex-wrap gap-x-3 gap-y-4">
                         {puzzle.ciphertext.split(' ').map((word, wIdx) => (
@@ -196,21 +191,12 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
                                                 sound.playKeyClick();
                                                 setSelectedCipherChar(upperChar);
                                             }}
-                                            className={`flex flex-col items-center cursor-pointer transition-transform ${selectedCipherChar === upperChar ? 'scale-110' : ''
-                                                }`}
+                                            className={`flex flex-col items-center cursor-pointer transition-transform ${selectedCipherChar === upperChar ? 'scale-110' : ''}`}
                                         >
-                                            <span className={`text-base sm:text-lg font-bold h-6 flex items-center justify-center ${mapped
-                                                ? 'text-cyan-300 drop-shadow-[0_0_6px_rgba(0,232,198,0.6)]'
-                                                : 'text-amber-500/40'
-                                                }`}>
+                                            <span className={`text-base sm:text-lg font-bold h-6 flex items-center justify-center ${mapped ? 'text-cyan-300 drop-shadow-[0_0_6px_rgba(0,232,198,0.6)]' : 'text-amber-500/40'}`}>
                                                 {mapped || '_'}
                                             </span>
-                                            <span className={`text-xs px-1.5 py-0.5 rounded border text-center min-w-[22px] ${selectedCipherChar === upperChar
-                                                ? 'border-amber-400 bg-amber-500/30 text-amber-200 font-bold'
-                                                : mapped
-                                                    ? 'border-emerald-500/50 bg-emerald-950/40 text-emerald-300'
-                                                    : 'border-neutral-800 bg-neutral-900 text-neutral-400'
-                                                }`}>
+                                            <span className={`text-xs px-1.5 py-0.5 rounded border text-center min-w-[22px] ${selectedCipherChar === upperChar ? 'border-amber-400 bg-amber-500/30 text-amber-200 font-bold' : mapped ? 'border-emerald-500/50 bg-emerald-950/40 text-emerald-300' : 'border-neutral-800 bg-neutral-900 text-neutral-400'}`}>
                                                 {upperChar}
                                             </span>
                                         </div>
@@ -221,11 +207,9 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
                     </div>
                 </div>
 
-                {/* Letter Substitution Map Table */}
                 <div className="space-y-2">
                     <div className="text-xs font-bold text-emerald-400 flex items-center justify-between">
-                        <span>KEY ASSIGNMENT TABLE:</span>
-                        <span className="text-neutral-400 text-[11px]">MAP CIPHER LETTER &gt; PLAINTEXT LETTER</span>
+                        <span>KEY MAPPINGS:</span>
                     </div>
 
                     <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-9 gap-2">
@@ -237,12 +221,7 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
                             return (
                                 <div
                                     key={cipherCh}
-                                    className={`border rounded p-2 text-center transition-all ${isSelected
-                                        ? 'border-amber-400 bg-amber-950/40 shadow-[0_0_8px_rgba(255,176,0,0.3)]'
-                                        : mapped
-                                            ? 'border-emerald-500/40 bg-emerald-950/20'
-                                            : 'border-neutral-800 bg-[#0d120f]'
-                                        }`}
+                                    className={`border rounded p-2 text-center transition-all ${isSelected ? 'border-amber-400 bg-amber-950/40' : mapped ? 'border-emerald-500/40 bg-emerald-950/20' : 'border-neutral-800 bg-[#0d120f]'}`}
                                 >
                                     <div className="flex items-center justify-between text-[10px] text-neutral-400 mb-1">
                                         <span className="font-bold text-amber-400">{cipherCh}</span>
@@ -253,10 +232,10 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
                                         type="text"
                                         maxLength={1}
                                         value={mapped}
-                                        onChange={(e) => handleSetMapping(cipherCh, e.target.value)}
+                                        onChange={(e) => setMapping(cipherCh, e.target.value)}
                                         onFocus={() => setSelectedCipherChar(cipherCh)}
                                         placeholder="?"
-                                        className="w-full text-center bg-[#060a08] border border-emerald-500/30 text-cyan-300 font-bold text-sm py-1 rounded outline-none uppercase focus:border-cyan-400 focus:bg-cyan-950/20"
+                                        className="w-full text-center bg-[#060a08] border border-emerald-500/30 text-cyan-300 font-bold text-sm py-1 rounded outline-none uppercase focus:border-cyan-400"
                                     />
                                 </div>
                             );
@@ -264,11 +243,9 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
                     </div>
                 </div>
 
-                {/* Real-time Frequency Analysis Telemetry Chart */}
                 <div className="border border-emerald-500/20 rounded-lg p-3 bg-[#0a0f0d] space-y-2">
                     <div className="text-[11px] font-bold text-neutral-400 flex items-center justify-between">
-                        <span>FREQUENCY ANALYSIS TELEMETRY (TOP SAMPLES)</span>
-                        <span className="text-neutral-400">STD ENGLISH: E (12.7%), T (9.1%), A (8.2%), O (7.5%)</span>
+                        <span>FREQUENCY ANALYSIS</span>
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2 text-[10px]">
@@ -278,7 +255,7 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
                                 <div key={ch} className="bg-neutral-900/60 p-1.5 rounded border border-neutral-800">
                                     <div className="flex justify-between text-neutral-300">
                                         <strong className="text-amber-400">{ch}</strong>
-                                        <span>{freq.percent}% ({freq.count})</span>
+                                        <span>{freq.percent}%</span>
                                     </div>
                                     <div className="w-full bg-neutral-800 h-1 rounded mt-1 overflow-hidden">
                                         <div
@@ -292,24 +269,18 @@ export default function CipherPuzzle({ puzzle, sector, onSolve, onBack }) {
                     </div>
                 </div>
 
-                {/* Verification & Status */}
                 {statusMessage && (
-                    <div className={`p-2.5 rounded text-xs border font-semibold ${statusMessage.type === 'success'
-                        ? 'border-emerald-500/50 bg-emerald-950/30 text-emerald-300'
-                        : statusMessage.type === 'error'
-                            ? 'border-red-500/50 bg-red-950/30 text-red-300'
-                            : 'border-amber-500/50 bg-amber-950/30 text-amber-300'
-                        }`}>
+                    <div className={`p-2.5 rounded text-xs border font-semibold ${statusMessage.type === 'success' ? 'border-emerald-500/50 bg-emerald-950/30 text-emerald-300' : statusMessage.type === 'error' ? 'border-red-500/50 bg-red-950/30 text-red-300' : 'border-amber-500/50 bg-amber-950/30 text-amber-300'}`}>
                         {statusMessage.text}
                     </div>
                 )}
 
                 <div className="pt-2 border-t border-neutral-800 flex justify-end">
                     <button
-                        onClick={handleVerify}
+                        onClick={verifyCipher}
                         className="px-6 py-2.5 rounded bg-emerald-500 text-neutral-950 font-bold tracking-wider text-xs sm:text-sm hover:bg-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.5)] active:scale-95 transition-all cursor-pointer"
                     >
-                        VERIFY_DECRYPTION &gt;&gt;
+                        VERIFY DECRYPTION &gt;&gt;
                     </button>
                 </div>
             </div>

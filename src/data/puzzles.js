@@ -3,9 +3,6 @@
  */
 
 export const PUZZLES = {
-    // -------------------------------------------------------------
-    // SECTOR 1: SYNTAX FIX (PERIMETER GATEWAY)
-    // -------------------------------------------------------------
     syntax_01: {
         id: 'syntax_01',
         archetype: 'SYNTAX_FIX',
@@ -59,9 +56,6 @@ SyntaxError: expected ':'`,
         ]
     },
 
-    // -------------------------------------------------------------
-    // SECTOR 2: LOGIC GATE (FIREWALL SWITCHYARD)
-    // -------------------------------------------------------------
     logic_01: {
         id: 'logic_01',
         archetype: 'LOGIC_GATE',
@@ -92,9 +86,6 @@ SyntaxError: expected ':'`,
         ]
     },
 
-    // -------------------------------------------------------------
-    // SECTOR 3: SUBSTITUTION CIPHER (CRYPT VAULT)
-    // -------------------------------------------------------------
     cipher_01: {
         id: 'cipher_01',
         archetype: 'CIPHER',
@@ -116,9 +107,6 @@ SyntaxError: expected ':'`,
         ]
     },
 
-    // -------------------------------------------------------------
-    // SECTOR 4: ADVANCED LOGIC GATE (KERNEL SUBSYSTEM)
-    // -------------------------------------------------------------
     logic_02: {
         id: 'logic_02',
         archetype: 'LOGIC_GATE',
@@ -150,9 +138,7 @@ SyntaxError: expected ':'`,
         ]
     },
 
-    // -------------------------------------------------------------
-    // SECTOR 5: SYNTAX FIX (PROMETHEUS CORE)
-    // -------------------------------------------------------------
+
     syntax_02: {
         id: 'syntax_02',
         archetype: 'SYNTAX_FIX',
@@ -211,9 +197,7 @@ Reason: dereferencing uninitialized pointer reg->override_val (0x000000000000000
     }
 };
 
-/**
- * Gate Evaluator Logic
- */
+
 export function evaluateGate(gateType, in1, in2) {
     const a = Boolean(in1);
     const b = Boolean(in2);
@@ -229,9 +213,6 @@ export function evaluateGate(gateType, in1, in2) {
     }
 }
 
-/**
- * Evaluates a circuit configuration against puzzle test vectors
- */
 export function evaluateCircuit(puzzle, gateConfig) {
     const results = [];
     let allPassed = true;
@@ -278,9 +259,6 @@ export function evaluateCircuit(puzzle, gateConfig) {
     return { allPassed, results };
 }
 
-/**
- * Standard English letter frequencies for frequency analysis comparison
- */
 export const ENGLISH_FREQUENCIES = {
     E: 12.7, T: 9.1, A: 8.2, O: 7.5, I: 7.0, N: 6.7, S: 6.3, H: 6.1, R: 6.0, D: 4.3,
     L: 4.0, C: 2.8, U: 2.8, M: 2.4, W: 2.4, F: 2.2, G: 2.0, Y: 2.0, P: 1.9, B: 1.5,

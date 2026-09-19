@@ -14,7 +14,7 @@ export default function LogicGatePuzzle({ puzzle, sector, onSolve, onBack }) {
     const [diagnosticResults, setDiagnosticResults] = useState(null);
     const [isSimulating, setIsSimulating] = useState(false);
 
-    const handleCycleGate = (gateId) => {
+    const cycleGate = (gateId) => {
         sound.playToggle();
         const slot = puzzle.gateSlots.find((s) => s.id === gateId);
         if (!slot) return;
@@ -51,7 +51,7 @@ export default function LogicGatePuzzle({ puzzle, sector, onSolve, onBack }) {
 
     return (
         <div className="space-y-6 font-mono max-w-5xl mx-auto">
-            {/* Module Header Bar */}
+
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-cyan-500/30 pb-3">
                 <div>
                     <div className="flex items-center space-x-2 text-xs text-neutral-400">
@@ -72,6 +72,11 @@ export default function LogicGatePuzzle({ puzzle, sector, onSolve, onBack }) {
                     </h2>
                 </div>
 
+
+
+
+
+
                 <div className="text-right text-xs">
                     <div className="text-neutral-400">TARGET BUS STATUS</div>
                     <div className="text-emerald-400 font-bold">ALL VECTORS HIGH [1]</div>
@@ -82,7 +87,7 @@ export default function LogicGatePuzzle({ puzzle, sector, onSolve, onBack }) {
                 {puzzle.description}
             </p>
 
-            {/* Interactive Circuit Schematic */}
+
             <div className="bg-[#0b0e14] border-2 border-cyan-500/40 rounded-xl p-4 sm:p-6 relative overflow-hidden shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]">
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#00e8c608_1px,transparent_1px),linear-gradient(to_bottom,#00e8c608_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
@@ -92,14 +97,14 @@ export default function LogicGatePuzzle({ puzzle, sector, onSolve, onBack }) {
                         <span className="text-amber-400 text-[11px] animate-pulse">CLICK ANY GATE TO ROTATE TYPE</span>
                     </div>
 
-                    {/* Interactive Gate Cards Grid */}
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {puzzle.gateSlots.map((slot) => {
                             const currentType = gateConfig[slot.id];
                             return (
                                 <div
                                     key={slot.id}
-                                    onClick={() => handleCycleGate(slot.id)}
+                                    onClick={() => cycleGate(slot.id)}
                                     className="bg-[#131922] border-2 border-cyan-500/50 hover:border-cyan-300 rounded-lg p-3 transition-all duration-150 cursor-pointer group shadow-[0_0_10px_rgba(0,232,198,0.1)] hover:shadow-[0_0_15px_rgba(0,232,198,0.3)] hover:-translate-y-0.5 select-none"
                                 >
                                     <div className="flex items-center justify-between text-[11px] text-neutral-400 mb-2">
@@ -134,7 +139,7 @@ export default function LogicGatePuzzle({ puzzle, sector, onSolve, onBack }) {
                         })}
                     </div>
 
-                    {/* Diagnostic Action Bar */}
+
                     <div className="pt-4 border-t border-neutral-800 flex flex-wrap items-center justify-between gap-3">
                         <div className="text-xs text-neutral-400">
                             STATE: <span className="text-cyan-400 font-bold">READY TO TRANSMIT SIGNAL</span>
@@ -154,7 +159,7 @@ export default function LogicGatePuzzle({ puzzle, sector, onSolve, onBack }) {
                 </div>
             </div>
 
-            {/* Diagnostic Signal Verification Table */}
+
             {diagnosticResults && (
                 <div className="bg-[#121417] border border-cyan-500/30 rounded-lg p-4 space-y-3">
                     <div className="flex items-center justify-between text-xs font-bold">

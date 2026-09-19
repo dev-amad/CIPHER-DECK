@@ -30,15 +30,11 @@ export default function Header({
     return (
         <header className="border-b border-amber-500/30 bg-[#0d1117]/95 px-4 py-3 select-none backdrop-blur-sm sticky top-0 z-40">
             <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 font-mono text-xs sm:text-sm">
-
-                {/* Left: Deck Identity & Disk Indicator */}
                 <div className="flex items-center space-x-3">
-                    {/* Retro Floppy Disk Visual */}
                     <div
                         className="flex items-center space-x-2 px-2.5 py-1 rounded bg-[#161b22] border border-amber-500/30 group"
                         title={isDiskBusy ? "DISK I/O ACTIVE" : "DRIVE A: READY"}
                     >
-                        {/* Floppy SVG */}
                         <svg
                             className={`w-5 h-5 transition-transform duration-300 ${isDiskBusy ? 'animate-bounce text-amber-400' : 'text-amber-500/80'}`}
                             viewBox="0 0 24 24"
@@ -53,13 +49,9 @@ export default function Header({
                             <polyline points="7 3 7 8 15 8" />
                         </svg>
 
-                        {/* LED Indicator Light */}
                         <div className="flex items-center space-x-1.5">
                             <span
-                                className={`w-2 h-2 rounded-full transition-all duration-150 ${isDiskBusy
-                                        ? 'bg-amber-400 shadow-[0_0_8px_#ffb000] animate-pulse'
-                                        : 'bg-emerald-500/80 shadow-[0_0_4px_#10b981]'
-                                    }`}
+                                className={`w-2 h-2 rounded-full transition-all duration-150 ${isDiskBusy ? 'bg-amber-400 shadow-[0_0_8px_#ffb000] animate-pulse' : 'bg-emerald-500/80 shadow-[0_0_4px_#10b981]'}`}
                             />
                             <span className="text-[10px] tracking-wider text-neutral-400">
                                 {isDiskBusy ? 'R/W' : 'RDY'}
@@ -67,7 +59,6 @@ export default function Header({
                         </div>
                     </div>
 
-                    {/* System Title */}
                     <div>
                         <div className="flex items-center space-x-2">
                             <span className="text-amber-400 font-bold tracking-widest text-sm sm:text-base drop-shadow-[0_0_8px_rgba(255,176,0,0.6)]">
@@ -83,7 +74,6 @@ export default function Header({
                     </div>
                 </div>
 
-                {/* Center: Security Clearance Badge */}
                 <div className="flex items-center space-x-2">
                     <span className="text-neutral-400 text-xs hidden md:inline">AUTH:</span>
                     <div className={`px-2.5 py-1 rounded border font-semibold tracking-wider text-xs flex items-center space-x-2 ${badge.color}`}>
@@ -92,24 +82,18 @@ export default function Header({
                     </div>
                 </div>
 
-                {/* Right: Sound & System Controls */}
                 <div className="flex items-center space-x-2">
-                    {/* Audio Toggle */}
                     <button
                         onClick={() => {
                             sound.playKeyClick();
                             onToggleSound();
                         }}
-                        className={`px-2.5 py-1 rounded border text-xs flex items-center space-x-1.5 transition-colors ${soundMuted
-                                ? 'border-neutral-700 text-neutral-500 hover:border-neutral-600'
-                                : 'border-amber-500/60 text-amber-400 bg-amber-950/30 hover:bg-amber-900/40 shadow-[0_0_8px_rgba(255,176,0,0.2)]'
-                            }`}
+                        className={`px-2.5 py-1 rounded border text-xs flex items-center space-x-1.5 transition-colors ${soundMuted ? 'border-neutral-700 text-neutral-500 hover:border-neutral-600' : 'border-amber-500/60 text-amber-400 bg-amber-950/30 hover:bg-amber-900/40 shadow-[0_0_8px_rgba(255,176,0,0.2)]'}`}
                         title="Toggle Synthesized Audio"
                     >
                         <span>{soundMuted ? 'MUTED' : 'AUDIO [ON]'}</span>
                     </button>
 
-                    {/* Reset Terminal */}
                     <button
                         onClick={() => {
                             sound.playError();
@@ -121,7 +105,6 @@ export default function Header({
                         RESET_TERM
                     </button>
                 </div>
-
             </div>
         </header>
     );
