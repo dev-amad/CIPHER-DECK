@@ -1,31 +1,16 @@
 import React from 'react';
 import { sound } from '../audio/soundSystem';
 
-export default function Header({
-    clearanceTier,
-    isDiskBusy,
-    soundMuted,
-    onToggleSound,
-    onResetTerminal
-}) {
-    const getClearanceBadge = (tier) => {
-        switch (tier) {
-            case 1:
-                return { label: 'TIER-1 :: GUEST', color: 'border-amber-600/60 text-amber-400 bg-amber-950/30' };
-            case 2:
-                return { label: 'TIER-2 :: OPERATOR', color: 'border-amber-500 text-amber-300 bg-amber-950/40' };
-            case 3:
-                return { label: 'TIER-3 :: SYSADMIN', color: 'border-cyan-500 text-cyan-300 bg-cyan-950/40' };
-            case 4:
-                return { label: 'TIER-4 :: ROOT_KERNEL', color: 'border-cyan-400 text-cyan-200 bg-cyan-950/60' };
-            case 5:
-                return { label: 'TIER-5 :: BLACK_ICE', color: 'border-red-500 text-red-300 bg-red-950/50 shadow-[0_0_12px_rgba(255,77,77,0.4)]' };
-            default:
-                return { label: 'TIER-1 :: GUEST', color: 'border-amber-600/60 text-amber-400 bg-amber-950/30' };
-        }
-    };
+const TIER_MAP = {
+    1: { label: 'TIER-1 :: GUEST', color: 'border-amber-600/60 text-amber-400 bg-amber-950/30' },
+    2: { label: 'TIER-2 :: OPERATOR', color: 'border-amber-500 text-amber-300 bg-amber-950/40' },
+    3: { label: 'TIER-3 :: SYSADMIN', color: 'border-cyan-500 text-cyan-300 bg-cyan-950/40' },
+    4: { label: 'TIER-4 :: ROOT_KERNEL', color: 'border-cyan-400 text-cyan-200 bg-cyan-950/60' },
+    5: { label: 'TIER-5 :: BLACK_ICE', color: 'border-red-500 text-red-300 bg-red-950/50 shadow-[0_0_12px_rgba(255,77,77,0.4)]' },
+};
 
-    const badge = getClearanceBadge(clearanceTier);
+export default function Header({ clearanceTier, isDiskBusy, soundMuted, onToggleSound, onResetTerminal }) {
+    const tierInfo = TIER_MAP[clearanceTier] || TIER_MAP[1];
 
     return (
         <header className="border-b border-amber-500/30 bg-[#0d1117]/95 px-4 py-3 select-none backdrop-blur-sm sticky top-0 z-40">
@@ -76,9 +61,9 @@ export default function Header({
 
                 <div className="flex items-center space-x-2">
                     <span className="text-neutral-400 text-xs hidden md:inline">AUTH:</span>
-                    <div className={`px-2.5 py-1 rounded border font-semibold tracking-wider text-xs flex items-center space-x-2 ${badge.color}`}>
+                    <div className={`px-2.5 py-1 rounded border font-semibold tracking-wider text-xs flex items-center space-x-2 ${tierInfo.color}`}>
                         <span className="w-1.5 h-1.5 rounded-full bg-current animate-ping" />
-                        <span>{badge.label}</span>
+                        <span>{tierInfo.label}</span>
                     </div>
                 </div>
 

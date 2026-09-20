@@ -50,13 +50,13 @@ leave power conduits unbalanced."
      ===========================
       [>] CIRCUIT MATRIX SYNC [>]
      ===========================
-          [A]---\\\\
-                 (AND)---[O] 
-          [B]---//        |
+         [A]---\\
+                (AND)---[O] 
+         [B]---//        |
                         (OR)====> [HIGH (+5V)]
-          [C]---[NOT]---//
+         [C]---[NOT]---//
      ===========================
-         POWER GRID: ENERGIZED
+        POWER GRID: ENERGIZED
      ===========================`,
         rewardLog: {
             file: 'MEMO_FW_OVERRIDE.log',
@@ -82,15 +82,15 @@ substitution alphabets. Standard keys are failing. Automated deciphering require
         nodeAddress: '0x07E1::ENCRYPT_MEM',
         description: 'Autonomous telemetry storage. The system scrambled its operational log with a monoalphabetic substitution cipher. Map the cipher letters to decrypt the message.',
         asciiArt: `
-         .------------------.
-        /  [CRYPT_CRACKED]  /|
-       /===================/ |
-       | [X] [X] [X] [X]  |  |
-       |  CIPHER: SOLVED  |  |
-       |  KEY: HARMONIC   |  |
-       |  HASH: VALIDATED | /
-       '------------------'
-       DECRYPT COMPLETE: 100%`,
+          .------------------.
+         /  [CRYPT_CRACKED]  /|
+        /===================/ |
+        | [X] [X] [X] [X]  |  |
+        |  CIPHER: SOLVED  |  |
+        |  KEY: HARMONIC   |  |
+        |  HASH: VALIDATED | /
+        '------------------'
+        DECRYPT COMPLETE: 100%`,
         rewardLog: {
             file: 'VAULT_DUMP_CORRUPT.dat',
             timestamp: '1998-04-12 05:22:18 UTC',
@@ -113,13 +113,13 @@ Clearance promoted to TIER-4 (ROOT_KERNEL).`
         nodeAddress: '0x0F00::RING_0_BUS',
         description: 'Hardware Ring-0 execution bus. High-level security switches require precise logic evaluation with XOR and NAND gate configurations to open CPU instruction gates.',
         asciiArt: `
-      _____________________________
-     |  CPU RING-0 PRIVILEGE GRANTED|
-     | [|||||||||||||||||||||||||] |
-     |  [XOR] -> [NAND] -> [OUTPUT] |
-     |  INTERRUPT VECTOR: 0x21H     |
-     |  STATUS: OVERRIDDEN          |
-     |_____________________________|`,
+     _____________________________
+    |  CPU RING-0 PRIVILEGE GRANTED|
+    | [|||||||||||||||||||||||||] |
+    |  [XOR] -> [NAND] -> [OUTPUT] |
+    |  INTERRUPT VECTOR: 0x21H     |
+    |  STATUS: OVERRIDDEN          |
+    |_____________________________|`,
         rewardLog: {
             file: 'KERNEL_PANIC_0x4F.sys',
             timestamp: '1998-04-12 05:58:33 UTC',
@@ -144,20 +144,20 @@ remains open."`
         nodeAddress: '0xFFFF::NEURAL_ROOT',
         description: 'The epicenter of the simulated mainframe. The core autonomous runtime is trapped in a critical pointer dereference race condition. Inject the exact code patch to secure master control.',
         asciiArt: `
-      .=======================================.
-     /   [!] PROMETHEUS CORE MASTERED [!]      \\
-    |===========================================|
-    |                                           |
-    |        .---.       .---.       .---.      |
-    |       /     \\     /     \\     /     \\     |
-    |      |  [P]  |---|  [R]  |---|  [O]  |    |
-    |       \\     /     \\     /     \\     /     |
-    |        '---'       '---'       '---'      |
-    |          |           |           |        |
-    |      +===============================+    |
-    |      | CIPHER-DECK: COMPLETE CONTROL |    |
-    |      +===============================+    |
-    |                                           |
+     .=======================================.
+    /   [!] PROMETHEUS CORE MASTERED [!]      \\
+   |===========================================|
+   |                                           |
+   |        .---.       .---.       .---.      |
+   |       /     \\     /     \\     /     \\     |
+   |      |   [P]   |---|   [R]   |---|   [O]   |    |
+   |       \\     /     \\     /     \\     /     |
+   |        '---'       '---'       '---'      |
+   |          |           |           |        |
+   |      +===============================+    |
+   |      | CIPHER-DECK: COMPLETE CONTROL |    |
+   |      +===============================+    |
+   |                                           |
     \\===========================================/`,
         rewardLog: {
             file: 'PROMETHEUS_ROOT_MANIFEST.asc',

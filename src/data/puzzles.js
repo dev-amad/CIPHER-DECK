@@ -1,7 +1,3 @@
-/**
- * CIPHER-DECK Puzzle Definitions & Circuit Logic Engine
- */
-
 export const PUZZLES = {
     syntax_01: {
         id: 'syntax_01',
@@ -26,7 +22,7 @@ export const PUZZLES = {
         errorLine: 6,
         compilerDiagnostic: `  File "sentinel_listener.py", line 6
     while True
-             ^
+              ^
 SyntaxError: expected ':'`,
         options: [
             {
@@ -138,7 +134,6 @@ SyntaxError: expected ':'`,
         ]
     },
 
-
     syntax_02: {
         id: 'syntax_02',
         archetype: 'SYNTAX_FIX',
@@ -197,66 +192,63 @@ Reason: dereferencing uninitialized pointer reg->override_val (0x000000000000000
     }
 };
 
+export function evaluateGate(gateType, val1, val2) {
+    const x = Boolean(val1);
+    const y = Boolean(val2);
 
-export function evaluateGate(gateType, in1, in2) {
-    const a = Boolean(in1);
-    const b = Boolean(in2);
-
-    switch (gateType) {
-        case 'AND': return (a && b) ? 1 : 0;
-        case 'OR': return (a || b) ? 1 : 0;
-        case 'XOR': return ((a && !b) || (!a && b)) ? 1 : 0;
-        case 'NAND': return !(a && b) ? 1 : 0;
-        case 'NOR': return !(a || b) ? 1 : 0;
-        case 'NOT': return !a ? 1 : 0;
-        default: return 0;
-    }
+    if (gateType === 'AND') return (x && y) ? 1 : 0;
+    if (gateType === 'OR') return (x || y) ? 1 : 0;
+    if (gateType === 'XOR') return ((x && !y) || (!x && y)) ? 1 : 0;
+    if (gateType === 'NAND') return !(x && y) ? 1 : 0;
+    if (gateType === 'NOR') return !(x || y) ? 1 : 0;
+    if (gateType === 'NOT') return !x ? 1 : 0;
+    return 0;
 }
 
-export function evaluateCircuit(puzzle, gateConfig) {
-    const results = [];
-    let allPassed = true;
+export function evaluateCircuit(puz, cfg) {
+    const resList = [];
+    let okAll = true;
 
-    if (puzzle.id === 'logic_01') {
-        for (const tv of puzzle.testVectors) {
-            const g1 = evaluateGate(gateConfig['G1'], tv.inputs.A, tv.inputs.B);
-            const g2 = evaluateGate(gateConfig['G2'], tv.inputs.B, tv.inputs.C);
-            const g3 = evaluateGate(gateConfig['G3'], g1, g2);
+    if (puz.id === 'logic_01') {
+        for (const t of puz.testVectors) {
+            const g1 = evaluateGate(cfg['G1'], t.inputs.A, t.inputs.B);
+            const g2 = evaluateGate(cfg['G2'], t.inputs.B, t.inputs.C);
+            const g3 = evaluateGate(cfg['G3'], g1, g2);
 
-            const passed = g3 === tv.expectedOutput;
-            if (!passed) allPassed = false;
+            const match = g3 === t.expectedOutput;
+            if (!match) okAll = false;
 
-            results.push({
-                vectorName: tv.name,
-                inputs: tv.inputs,
+            resList.push({
+                vectorName: t.name,
+                inputs: t.inputs,
                 nodeOutputs: { G1: g1, G2: g2, G3: g3 },
                 actualOutput: g3,
-                expectedOutput: tv.expectedOutput,
-                passed
+                expectedOutput: t.expectedOutput,
+                passed: match
             });
         }
-    } else if (puzzle.id === 'logic_02') {
-        for (const tv of puzzle.testVectors) {
-            const l1 = evaluateGate(gateConfig['L1'], tv.inputs.IN_0, tv.inputs.IN_1);
-            const l2 = evaluateGate(gateConfig['L2'], tv.inputs.IN_2, tv.inputs.IN_3);
-            const l3 = evaluateGate(gateConfig['L3'], l1, tv.inputs.IN_2);
-            const l4 = evaluateGate(gateConfig['L4'], l3, l2);
+    } else if (puz.id === 'logic_02') {
+        for (const t of puz.testVectors) {
+            const l1 = evaluateGate(cfg['L1'], t.inputs.IN_0, t.inputs.IN_1);
+            const l2 = evaluateGate(cfg['L2'], t.inputs.IN_2, t.inputs.IN_3);
+            const l3 = evaluateGate(cfg['L3'], l1, t.inputs.IN_2);
+            const l4 = evaluateGate(cfg['L4'], l3, l2);
 
-            const passed = l4 === tv.expectedOutput;
-            if (!passed) allPassed = false;
+            const match = l4 === t.expectedOutput;
+            if (!match) okAll = false;
 
-            results.push({
-                vectorName: tv.name,
-                inputs: tv.inputs,
+            resList.push({
+                vectorName: t.name,
+                inputs: t.inputs,
                 nodeOutputs: { L1: l1, L2: l2, L3: l3, L4: l4 },
                 actualOutput: l4,
-                expectedOutput: tv.expectedOutput,
-                passed
+                expectedOutput: t.expectedOutput,
+                passed: match
             });
         }
     }
 
-    return { allPassed, results };
+    return { allPassed: okAll, results: resList };
 }
 
 export const ENGLISH_FREQUENCIES = {

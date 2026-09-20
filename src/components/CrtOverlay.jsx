@@ -1,9 +1,9 @@
 import React from 'react';
-export default function CrtOverlay({ scanlinesEnabled = true, vignetteEnabled = true }) {
+
+export default function CrtOverlay({ scanlinesEnabled: lines = true, vignetteEnabled: vig = true }) {
     return (
         <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden select-none">
-
-            {scanlinesEnabled && (
+            {lines && (
                 <>
                     <div
                         className="absolute inset-0 bg-scanlines opacity-[0.18] mix-blend-overlay pointer-events-none"
@@ -16,8 +16,7 @@ export default function CrtOverlay({ scanlinesEnabled = true, vignetteEnabled = 
                 </>
             )}
 
-
-            {vignetteEnabled && (
+            {vig && (
                 <div
                     className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(0,0,0,0.85)] ring-1 ring-amber-500/20"
                     aria-hidden="true"

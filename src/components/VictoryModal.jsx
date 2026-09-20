@@ -6,6 +6,16 @@ export default function VictoryModal({ sector, onNextSector, onClose, isLastSect
         sound.playAccessGranted();
     }, []);
 
+    const handleExit = () => {
+        sound.playKeyClick();
+        onClose();
+    };
+
+    const handleAdvance = () => {
+        sound.playDiskSeek();
+        onNextSector();
+    };
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm select-none font-mono">
             <div className="bg-[#0e1217] border-2 border-amber-400 rounded-xl max-w-2xl w-full p-5 sm:p-6 shadow-[0_0_30px_rgba(255,176,0,0.4)] space-y-4 animate-fade-in relative overflow-hidden">
@@ -46,20 +56,14 @@ export default function VictoryModal({ sector, onNextSector, onClose, isLastSect
 
                 <div className="pt-2 flex flex-wrap items-center justify-end gap-3">
                     <button
-                        onClick={() => {
-                            sound.playKeyClick();
-                            onClose();
-                        }}
+                        onClick={handleExit}
                         className="px-4 py-2 rounded border border-neutral-700 text-neutral-400 hover:text-neutral-200 hover:border-neutral-500 text-xs transition-colors cursor-pointer"
                     >
                         CLOSE TO DECK
                     </button>
 
                     <button
-                        onClick={() => {
-                            sound.playDiskSeek();
-                            onNextSector();
-                        }}
+                        onClick={handleAdvance}
                         className="px-6 py-2 rounded bg-amber-500 text-neutral-950 font-bold text-xs sm:text-sm hover:bg-amber-400 shadow-[0_0_15px_rgba(255,176,0,0.5)] transition-all cursor-pointer hover:scale-105 active:scale-95"
                     >
                         {isLastSector ? 'VIEW ROOT MANIFEST >>' : 'ADVANCE TO NEXT SECTOR >>'}

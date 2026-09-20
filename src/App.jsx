@@ -14,113 +14,111 @@ import { SECTORS } from './data/sectors';
 import { PUZZLES } from './data/puzzles';
 import { sound } from './audio/soundSystem';
 
-const SAVE_KEY = 'cipher_deck_save_v2';
+const STORAGE_KEY = 'cipher_deck_save_v2';
 
 export default function App() {
-    const [stage, setStage] = useState('BOOT');
-    const [activeSector, setActiveSector] = useState(null);
-    const [clearanceTier, setClearanceTier] = useState(1);
-    const [solvedSectors, setSolvedSectors] = useState([]);
-    const [isDiskBusy, setIsDiskBusy] = useState(false);
-    const [soundMuted, setSoundMuted] = useState(false);
-    const [victoryModalSector, setVictoryModalSector] = useState(null);
+    const [view, setView] = useState('BOOT');
+    const [currSector, setCurrSector] = useState(null);
+    const [authTier, setAuthTier] = useState(1);
+    const [clearedNodes, setClearedNodes] = useState([]);
+    const [ioActive, setIoActive] = useState(false);
+    const [audioMuted, setAudioMuted] = useState(false);
+    const [modalSector, setModalSector] = useState(null);
 
-    // load save on boot
     useEffect(() => {
         try {
-            const saved = localStorage.getItem(SAVE_KEY);
-            if (saved) {
-                const p = JSON.parse(saved);
-                if (p.solvedSectors) setSolvedSectors(p.solvedSectors);
-                if (p.clearanceTier) setClearanceTier(p.clearanceTier);
-                if (p.soundMuted !== undefined) {
-                    setSoundMuted(p.soundMuted);
-                    sound.setMuted(p.soundMuted);
+            const rawData = localStorage.getItem(STORAGE_KEY);
+            if (rawData) {
+                const parsed = JSON.parse(rawData);
+                if (parsed.solvedSectors) setClearedNodes(parsed.solvedSectors);
+                if (parsed.clearanceTier) setAuthTier(parsed.clearanceTier);
+                if (parsed.soundMuted !== undefined) {
+                    setAudioMuted(parsed.soundMuted);
+                    sound.setMuted(parsed.soundMuted);
                 }
             }
-        } catch (err) {
-            console.log('load failed lol:', err);
+        } catch (ex) {
+            console.log('load failed lol:', ex);
         }
     }, []);
 
-    const saveState = (solved, tier) => {
-        setIsDiskBusy(true);
+    const commitSave = (nodesList, tierNum) => {
+        setIoActive(true);
         try {
-            localStorage.setItem(SAVE_KEY, JSON.stringify({
-                solvedSectors: solved,
-                clearanceTier: tier,
-                soundMuted
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                solvedSectors: nodesList,
+                clearanceTier: tierNum,
+                soundMuted: audioMuted
             }));
-        } catch (e) {
-            console.log('storage broke', e);
+        } catch (err) {
+            console.log('storage broke', err);
         }
-        setTimeout(() => setIsDiskBusy(false, 450)); // fake floppy drive delay
+        setTimeout(() => setIoActive(false), 450);
     };
 
-    const toggleAudio = () => {
-        const next = !soundMuted;
-        setSoundMuted(next);
-        sound.setMuted(next);
+    const switchAudio = () => {
+        const toggled = !audioMuted;
+        setAudioMuted(toggled);
+        sound.setMuted(toggled);
         try {
-            const saved = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}');
-            saved.soundMuted = next;
-            localStorage.setItem(SAVE_KEY, JSON.stringify(saved));
+            const temp = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            temp.soundMuted = toggled;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(temp));
         } catch (e) { }
     };
 
-    const nukeSave = () => {
-        localStorage.removeItem(SAVE_KEY);
-        setSolvedSectors([]);
-        setClearanceTier(1);
-        setActiveSector(null);
-        setVictoryModalSector(null);
-        setStage('BOOT');
+    const wipeApp = () => {
+        localStorage.removeItem(STORAGE_KEY);
+        setClearedNodes([]);
+        setAuthTier(1);
+        setCurrSector(null);
+        setModalSector(null);
+        setView('BOOT');
     };
 
-    const solveSector = () => {
-        if (!activeSector) return;
-        const id = activeSector.id;
-        let newSolved = solvedSectors;
-        if (!solvedSectors.includes(id)) {
-            newSolved = [...solvedSectors, id];
-            setSolvedSectors(newSolved);
+    const completeSector = () => {
+        if (!currSector) return;
+        const targetId = currSector.id;
+        let updatedList = clearedNodes;
+        if (!clearedNodes.includes(targetId)) {
+            updatedList = [...clearedNodes, targetId];
+            setClearedNodes(updatedList);
         }
 
-        const nextTier = Math.min(5, activeSector.tier + 1);
-        const updatedTier = Math.max(clearanceTier, nextTier);
-        setClearanceTier(updatedTier);
+        const nextT = Math.min(5, currSector.tier + 1);
+        const finalT = Math.max(authTier, nextT);
+        setAuthTier(finalT);
 
-        saveState(newSolved, updatedTier);
-        setVictoryModalSector(activeSector);
+        commitSave(updatedList, finalT);
+        setModalSector(currSector);
     };
 
-    const nextSector = () => {
-        const idx = SECTORS.findIndex(s => s.id === victoryModalSector.id);
-        setVictoryModalSector(null);
+    const advanceSector = () => {
+        const itemIdx = SECTORS.findIndex(s => s.id === modalSector.id);
+        setModalSector(null);
 
-        if (solvedSectors.length >= SECTORS.length || idx === SECTORS.length - 1) {
-            setStage('WIN');
+        if (clearedNodes.length >= SECTORS.length || itemIdx === SECTORS.length - 1) {
+            setView('WIN');
             return;
         }
 
-        const next = SECTORS[idx + 1];
-        if (next) {
-            setActiveSector(next);
-            setStage('PUZZLE');
+        const nextObj = SECTORS[itemIdx + 1];
+        if (nextObj) {
+            setCurrSector(nextObj);
+            setView('PUZZLE');
         } else {
-            setStage('DASHBOARD');
+            setView('DASHBOARD');
         }
     };
 
-    // render current puzzle based on archetype
-    const getPuzzleComponent = () => {
-        if (!activeSector) return null;
-        const p = PUZZLES[activeSector.puzzleId];
-        if (!p) return <div>Missing puzzle data</div>;
+    const renderPuzzleView = () => {
+        if (!currSector) return null;
+        const pz = PUZZLES[currSector.puzzleId];
+        if (!pz) return <div>Missing puzzle data</div>;
 
-        if (p.archetype === 'LOGIC_GATE') return <LogicGatePuzzle puzzle={p} sector={activeSector} onSolve={solveSector} onBack={() => setStage('DASHBOARD')} />;
-        if (p.archetype === 'CIPHER') return <CipherPuzzle puzzle={p} sector={activeSector} onSolve={solveSector} onBack={() => setStage('DASHBOARD')} />;
-        if (p.archetype === 'SYNTAX_FIX') return <SyntaxFixPuzzle puzzle={p} sector={activeSector} onSolve={solveSector} onBack={() => setStage('DASHBOARD')} />;
+        if (pz.archetype === 'LOGIC_GATE') return <LogicGatePuzzle puzzle={pz} sector={currSector} onSolve={completeSector} onBack={() => setView('DASHBOARD')} />;
+        if (pz.archetype === 'CIPHER') return <CipherPuzzle puzzle={pz} sector={currSector} onSolve={completeSector} onBack={() => setView('DASHBOARD')} />;
+        if (pz.archetype === 'SYNTAX_FIX') return <SyntaxFixPuzzle puzzle={pz} sector={currSector} onSolve={completeSector} onBack={() => setView('DASHBOARD')} />;
         return <div>unknown puzzle archetype</div>;
     };
 
@@ -128,41 +126,41 @@ export default function App() {
         <div className="min-h-screen bg-[#0d1117] text-amber-400 font-mono relative selection:bg-amber-500 selection:text-neutral-950">
             <CrtOverlay />
 
-            {stage === 'BOOT' && <BootSequence onComplete={() => setStage('DASHBOARD')} />}
-            {stage === 'WIN' && <WinScreen onRestart={nukeSave} />}
+            {view === 'BOOT' && <BootSequence onComplete={() => setView('DASHBOARD')} />}
+            {view === 'WIN' && <WinScreen onRestart={wipeApp} />}
 
-            {(stage === 'DASHBOARD' || stage === 'PUZZLE') && (
+            {(view === 'DASHBOARD' || view === 'PUZZLE') && (
                 <div className="flex flex-col min-h-screen">
                     <Header
-                        clearanceTier={clearanceTier}
-                        isDiskBusy={isDiskBusy}
-                        soundMuted={soundMuted}
-                        onToggleSound={toggleAudio}
-                        onResetTerminal={nukeSave}
+                        clearanceTier={authTier}
+                        isDiskBusy={ioActive}
+                        soundMuted={audioMuted}
+                        onToggleSound={switchAudio}
+                        onResetTerminal={wipeApp}
                     />
 
                     <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
-                        {stage === 'DASHBOARD' && (
+                        {view === 'DASHBOARD' && (
                             <div className="space-y-6">
                                 <DeckDashboard
                                     sectors={SECTORS}
-                                    solvedSectors={solvedSectors}
-                                    clearanceTier={clearanceTier}
-                                    onSelectSector={(sec) => { setActiveSector(sec); setStage('PUZZLE'); }}
+                                    solvedSectors={clearedNodes}
+                                    clearanceTier={authTier}
+                                    onSelectSector={(sec) => { setCurrSector(sec); setView('PUZZLE'); }}
                                 />
                                 <TerminalShell
-                                    clearanceTier={clearanceTier}
-                                    solvedSectors={solvedSectors}
+                                    clearanceTier={authTier}
+                                    solvedSectors={clearedNodes}
                                     sectors={SECTORS}
-                                    onLaunchSector={(sec) => { setActiveSector(sec); setStage('PUZZLE'); }}
-                                    onResetTerminal={nukeSave}
-                                    onToggleSound={toggleAudio}
-                                    soundMuted={soundMuted}
+                                    onLaunchSector={(sec) => { setCurrSector(sec); setView('PUZZLE'); }}
+                                    onResetTerminal={wipeApp}
+                                    onToggleSound={switchAudio}
+                                    soundMuted={audioMuted}
                                 />
                             </div>
                         )}
 
-                        {stage === 'PUZZLE' && getPuzzleComponent()}
+                        {view === 'PUZZLE' && renderPuzzleView()}
                     </main>
 
                     <footer className="border-t border-amber-500/20 py-2.5 px-4 text-center text-[10px] text-neutral-400">
@@ -171,12 +169,12 @@ export default function App() {
                 </div>
             )}
 
-            {victoryModalSector && (
+            {modalSector && (
                 <VictoryModal
-                    sector={victoryModalSector}
-                    onNextSector={nextSector}
-                    onClose={() => setVictoryModalSector(null)}
-                    isLastSector={victoryModalSector.tier === 5}
+                    sector={modalSector}
+                    onNextSector={advanceSector}
+                    onClose={() => setModalSector(null)}
+                    isLastSector={modalSector.tier === 5}
                 />
             )}
         </div>

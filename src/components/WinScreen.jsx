@@ -6,6 +6,11 @@ export default function WinScreen({ onRestart }) {
         sound.playAccessGranted();
     }, []);
 
+    const triggerReboot = () => {
+        sound.playDiskSeek();
+        onRestart();
+    };
+
     return (
         <div className="min-h-screen bg-[#090c10] text-amber-400 font-mono p-4 sm:p-8 flex flex-col items-center justify-center select-none">
             <div className="max-w-3xl w-full bg-[#11161d] border-2 border-amber-400 rounded-2xl p-6 sm:p-8 shadow-[0_0_40px_rgba(255,176,0,0.5)] space-y-6 text-center">
@@ -73,10 +78,7 @@ export default function WinScreen({ onRestart }) {
 
                 <div className="pt-2">
                     <button
-                        onClick={() => {
-                            sound.playDiskSeek();
-                            onRestart();
-                        }}
+                        onClick={triggerReboot}
                         className="px-8 py-3 bg-amber-500 text-neutral-950 font-bold rounded-lg text-sm tracking-widest hover:bg-amber-400 shadow-[0_0_20px_rgba(255,176,0,0.6)] hover:scale-105 active:scale-95 transition-all cursor-pointer"
                     >
                         REBOOT CIPHER-DECK &gt;&gt;
